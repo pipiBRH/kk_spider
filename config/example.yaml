@@ -1,0 +1,7 @@
+govDatasetURL: "http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001"
+
+elasticsearch:
+  host: "127.0.0.1"
+  port: 9200
+  index: "youbike"
+  type: "_doc"
