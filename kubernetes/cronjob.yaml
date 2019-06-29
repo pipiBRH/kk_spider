@@ -1,0 +1,37 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      concurrencyPolicy: Replace
+      template:
+        spec:
+          containers:
+            - name: spider
+              image: asia.gcr.io/brave-smile-234203/kk_api:latest
+              # command: ["sleep", "600"]
+              # imagePullPolicy: Always
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 500Mi
+                limits:
+                  cpu: 200M
+                  memory: 1000Mi
+              volumeMounts:
+                - name: config
+                  mountPath: /work/config.yaml
+                  subPath: config.yaml
+              envFrom:
+                - configMapRef:
+                    name: env
+          restartPolicy: OnFailure
+          nodeSelector:
+            utility-api: "api"
+          volumes:
+            - name: config
+              secret:
+                secretName: spider-config
