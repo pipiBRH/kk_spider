@@ -5,7 +5,7 @@ steps:
       [
         "build",
         "-t",
-        "asia.gcr.io/$PROJECT_ID/kk_api:latest",
+        "asia.gcr.io/$PROJECT_ID/kk_spider:latest",
         "-f",
         "docker/Dockerfile",
         ".",
