@@ -4,20 +4,21 @@ import (
 	"log"
 	"os"
 
+	database "github.com/pipiBRH/kk_database"
+
 	"github.com/pipiBRH/kk_spider/config"
 	"github.com/pipiBRH/kk_spider/dal"
-	"github.com/pipiBRH/kk_spider/database"
 	"github.com/pipiBRH/kk_spider/request"
 )
 
 func main() {
-	config, err := config.NewConfig(os.Getenv("CONFIG_PATH"))
+	err := config.NewConfig(os.Getenv("CONFIG_PATH"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	data := request.NewSourceDataset()
-	err = data.GetDataset(config)
+	err = data.GetDataset(config.Config.GovDatasetURL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,13 +28,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	esClient, err := database.InitElasticsearchConnection(config)
+	err = database.InitElasticsearchConnection(
+		config.Config.Elasticsearch.Host,
+		config.Config.Elasticsearch.Port,
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	esDAL := dal.NewElasticsearchDAL(esClient)
-	_, err = esDAL.CreateYouBikeInfoByBulk(config.Elasticsearch.Index, config.Elasticsearch.Type, bikeInfo)
+	esDAL := dal.NewElasticsearchDAL(database.EsClient)
+	_, err = esDAL.CreateYouBikeInfoByBulk(config.Config.Elasticsearch.Index["youbike_history"], bikeInfo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = esDAL.UpdateYouBikeInfoByBulk(config.Config.Elasticsearch.Index["youbike"], bikeInfo)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"github.com/pipiBRH/kk_spider/dal"
-
-	"github.com/pipiBRH/kk_spider/config"
 )
 
 type (
@@ -53,8 +51,8 @@ func NewSourceDataset() *SourceDataset {
 	return new(SourceDataset)
 }
 
-func (ds *SourceDataset) GetDataset(config *config.Config) error {
-	targetContent, err := Curl(config.GovDatasetURL)
+func (ds *SourceDataset) GetDataset(url string) error {
+	targetContent, err := Curl(url)
 	if err != nil {
 		return err
 	}
