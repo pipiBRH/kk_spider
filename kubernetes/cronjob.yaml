@@ -1,17 +1,17 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: spider
 spec:
   schedule: "*/5 * * * *"
+  concurrencyPolicy: Replace
   jobTemplate:
     spec:
-      concurrencyPolicy: Replace
       template:
         spec:
           containers:
             - name: spider
-              image: asia.gcr.io/brave-smile-234203/kk_api:latest
+              image: asia.gcr.io/brave-smile-234203/kk_spider:latest
               # command: ["sleep", "600"]
               # imagePullPolicy: Always
               resources:
