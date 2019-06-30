@@ -11,4 +11,4 @@ ENV GO111MODULE=on
 
 RUN go mod download
 
-CMD ["go", "test", "-cover", "-gcflags=-l", "./..."]
+CMD ["CGO_ENABLED=0", "go", "test", "-cover", "-gcflags=-l", "./..."]
