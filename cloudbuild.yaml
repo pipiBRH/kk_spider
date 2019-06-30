@@ -7,7 +7,7 @@ steps:
         "-t",
         "asia.gcr.io/$PROJECT_ID/kk_spider_test:latest",
         "-f",
-        "docker/Dockerfile",
+        "docker/test.Dockerfile",
         ".",
       ]
     id: "build-spider-test"
