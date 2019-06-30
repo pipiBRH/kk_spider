@@ -10,10 +10,13 @@ func Curl(target string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	defer res.Body.Close()
+
 	content, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
+
 	return content, nil
 }
