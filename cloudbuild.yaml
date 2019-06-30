@@ -1,0 +1,18 @@
+timeout: 1800s
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "asia.gcr.io/$PROJECT_ID/kk_spider_test:latest",
+        "-f",
+        "docker/Dockerfile",
+        ".",
+      ]
+    id: "build-spider-test"
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["run", "asia.gcr.io/$PROJECT_ID/kk_spider_test:latest"]
+    id: "run-spider-test"
+tags:
+  - "spider-test"
