@@ -11,8 +11,5 @@ steps:
         ".",
       ]
     id: "build-spider-test"
-  - name: "gcr.io/cloud-builders/docker"
-    args: ["run", "asia.gcr.io/$PROJECT_ID/kk_spider_test:latest"]
-    id: "run-spider-test"
 tags:
   - "spider-test"
