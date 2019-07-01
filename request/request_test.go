@@ -3,8 +3,9 @@ package request
 import (
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCurlWithTestServer(t *testing.T) {
@@ -16,13 +17,8 @@ func TestCurlWithTestServer(t *testing.T) {
 	defer server.Close()
 
 	body, err := Curl(server.URL)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if string(body) != "ok" {
-		t.Error(body)
-	}
+	assert.NoError(t, err)
+	assert.Equal(t, string(body), "ok")
 }
 
 func TestGovRequestGetDataSet(t *testing.T) {
@@ -69,13 +65,8 @@ func TestGovRequestGetDataSet(t *testing.T) {
 
 	ds := NewSourceDataset()
 	err := ds.GetDataset(server.URL)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if !reflect.DeepEqual(ds, tDs) {
-		t.Error(ds)
-	}
+	assert.NoError(t, err)
+	assert.Equal(t, ds, tDs)
 }
 
 func TestGovRequestConvertedToElasticsearchDataFormat(t *testing.T) {
@@ -114,19 +105,8 @@ func TestGovRequestConvertedToElasticsearchDataFormat(t *testing.T) {
 	}
 
 	data, err := ds.ConvertedToElasticsearchDataFormat()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if len(data) != 1 {
-		t.Errorf("Data length error. Expect 1 but retrieve %d", len(data))
-	}
-
-	if data[0].Sno != 1001 {
-		t.Error(data[0].Sno)
-	}
-
-	if data[0].Mday != "2019-06-30 20:18:17" {
-		t.Error(data[0].Mday)
-	}
+	assert.NoError(t, err)
+	assert.Equal(t, len(data), 1)
+	assert.Equal(t, data[0].Sno, 1001)
+	assert.Equal(t, data[0].Mday, "2019-06-30 20:18:17")
 }
